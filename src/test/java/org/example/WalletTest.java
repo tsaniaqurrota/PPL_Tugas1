@@ -9,9 +9,9 @@ class WalletTest {
     @Test
     void testSetOwner() {
         //Mengganti pemilik wallet
-        Wallet wallet = new Wallet("Fenti");
-        wallet.setOwner("Tsania");
-        assertEquals("Tsania", wallet.owner, "Owner harus diubah menjadi Tsania");
+        Wallet wallet = new Wallet("Mingyu");
+        wallet.setOwner("Deka");
+        assertEquals("Deka", wallet.owner, "Owner harus diubah menjadi Deka");
     }
 
     @Test
@@ -26,7 +26,6 @@ class WalletTest {
         wallet.tambahKartu("Debit Card");
         assertFalse(wallet.listUangKoin.contains("Debit Card"));
         assertFalse(wallet.listUangLembaran.contains("Debit Card"));
-
     }
 
     @Test
@@ -43,7 +42,7 @@ class WalletTest {
         assertEquals("Mastercard", kartuDiambil,"Kartu yang ada pada list kartu dapat diambil");
 
         //2. Kartu yang sudah diambil tidak lagi berada di wallet
-        assertNull(kartuDiambil, "Kartu tidak dapat diambil karena tidak ada dalam list kartu");
+        assertNull(wallet.ambilKartu("Mastercard"), "Kartu tidak dapat diambil karena tidak ada dalam list kartu");
 
         //3. Kartu selain yang sudah diambil masih ada dalam list
         assertTrue(wallet.listKartu.contains("VISA"),"Kartu VISA masih ada di dalam wallet");
@@ -76,7 +75,7 @@ class WalletTest {
         assertFalse(wallet.listUangKoin.contains(5000), "5000 harus dimasukkan pada list uang lembaran");
         assertFalse(wallet.listUangKoin.contains(7000), "7000 harus dimasukkan pada list uang lembaran");
 
-        //5. Error saat menambahkan uang kurang dari 0 atau minus
+        //3. Error saat menambahkan uang kurang dari 0 atau minus
         assertThrows(Error.class, () -> wallet.tambahUangRupiah(-1000), "Error saat uang yang ditambahkan kurang dari 0");
     }
 
@@ -86,7 +85,7 @@ class WalletTest {
         Wallet wallet = new Wallet("Jay");
 
         //1. Mengambil uang di list kosong
-        int uangTaken = wallet.ambilUang(500000);
+        int uangTaken = wallet.ambilUang(50000);
         assertEquals(0, uangTaken, "Tidak dapat mengambil uang dari list kosong");
 
         //2. Uang lembaran yang telah diambil harus hilang dari list uang lembaran
@@ -96,13 +95,13 @@ class WalletTest {
         assertEquals(100000,uangTaken2,"Uang 100000 diambil dari list uang lembaran");
         assertFalse(wallet.listUangLembaran.contains(100000), "Uang 100000 tidak ada dalam list uang lembaran");
 
-        //4. Uang koin yang telah diambil harus hilang dari list uang koin
+        //3. Uang koin yang telah diambil harus hilang dari list uang koin
         wallet.tambahUangRupiah(500);
         int uangTaken3 = wallet.ambilUang(500);
         assertEquals(500,uangTaken3,"Uang 500 diambil dari list uang koin");
         assertFalse(wallet.listUangLembaran.contains(500), "Uang 500 tidak ada dalam list uang lembaran");
 
-        //5. Ambil salah satu uang yang bernilai sama, salah satu harus hilang dari list, namun salah satu tetap di list
+        //4. Ambil salah satu uang yang bernilai sama, salah satu harus hilang dari list, namun salah satu tetap di list
         wallet.tambahUangRupiah(20000);
         wallet.tambahUangRupiah(20000);
         wallet.ambilUang(20000);
@@ -113,12 +112,10 @@ class WalletTest {
         wallet.ambilUang(200);
         assertTrue(wallet.listUangKoin.contains(200), "Uang 200 masih ada dalam list uang koin");
 
-        //6. Ambil uang dengan jumlah negatif
+        //5. Ambil uang dengan jumlah negatif
         int uangTaken4 = wallet.ambilUang(-20000);
         assertEquals(0, uangTaken4, "Tidak dapat mengambil uang dengan jumlah negatif");
-
     }
-
 
     @Test
     void tampilkanUang() {
@@ -130,6 +127,5 @@ class WalletTest {
         wallet.tambahUangRupiah(100000);
         wallet.tambahUangRupiah(20000);
         assertEquals(170800, wallet.tampilkanUang(), "Total uang harus sesuai dari list uang lembaran");
-
     }
 }
